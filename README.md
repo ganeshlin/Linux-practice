@@ -1,2 +1,2 @@
-# 100-Days-of-DevOps-
-100 Days of DevOps
+# 100-Days-of-linux learning
+100 Days of linux 
