@@ -1,0 +1,78 @@
+# Linux Task 2 – Group-Based Access Control
+
+**Platform:** KodeKloud  
+**Track:** 100 Days of DevOps  
+**Category:** Linux User & Group Management  
+**Datacenter:** Stratos Datacenter  
+
+---
+
+## 🎯 Objective
+Implement group-based access control across all App servers.
+
+### Requirements:
+- Create a group named `nautilus_developers`
+- Add user `mohammed` to this group
+- If the user does not exist, create it
+- Perform the task on **all App servers**
+
+---
+
+## 🖥️ App Servers
+- stapp01
+- stapp02
+- stapp03
+
+---
+
+## 🛠️ Step-by-Step Implementation
+
+### 1️⃣ Connect to an App Server
+```bash
+ssh tony@stapp01.stratos.xfusioncorp.com
+sudo su -
+
+Create the group
+groupadd nautilus_developers
+
+
+Verify:
+
+getent group nautilus_developers
+
+3️⃣ Check if user exists
+id mohammed
+
+
+If user does not exist:
+
+useradd mohammed
+
+
+Verify:
+
+id mohammed
+
+4️⃣ Add user to the group
+usermod -aG nautilus_developers mohammed
+
+5️⃣ Verify group membership
+groups mohammed
+
+
+Expected output:
+
+mohammed : mohammed nautilus_developers
+
+6️⃣ Repeat on all App Servers
+
+Repeat steps 1–5 on:
+
+stapp02
+
+stapp03
+
+✅ Final Verification
+getent group nautilus_developers
+id mohammed
+groups mohammed
