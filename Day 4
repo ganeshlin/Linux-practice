@@ -1,0 +1,86 @@
+## Day 4 – Create Service User Without Home Directory
+
+### Task
+Create a service user `anita` on App Server 3 without a home directory.
+
+### Commands Used
+```bash
+ssh tony@stapp03
+sudo useradd -M anita
+id anita
+ls /home
+Verification
+
+User anita exists
+
+/home/anita does not exist
+
+Task Requirement (Simple)
+
+Create a service user:
+
+Username: anita
+
+Server: App Server 3
+
+Home directory: ❌ Do NOT create
+
+🔹 Step-by-Step Solution
+1️⃣ Login to App Server 3
+
+From the jump server (or wherever SSH access is allowed):
+
+ssh tony@stapp03
+
+
+👉 Use the provided password when prompted.
+
+2️⃣ Create user anita without home directory
+
+Use the -M option (means no home directory):
+
+sudo useradd -M anita
+
+
+✅ This creates the user without /home/anita.
+
+3️⃣ Verify the user exists
+id anita
+
+
+Expected output (example):
+
+uid=1003(anita) gid=1003(anita) groups=1003(anita)
+
+4️⃣ Confirm NO home directory was created
+ls /home
+
+
+👉 You should NOT see anita listed.
+
+Or check directly:
+
+ls -ld /home/anita
+
+
+Expected output:
+
+ls: cannot access '/home/anita': No such file or directory
+
+
+✅ This confirms the requirement is met.
+Why this task is important (Real World Use)
+
+Service users are used by applications, not humans
+
+They don’t need home directories
+
+Improves security and system cleanliness
+
+Common for:
+
+Monitoring agents
+
+Backup services
+
+Application daemons
