@@ -1,0 +1,115 @@
+# Linux Task 5 – Create Temporary User with Expiry (Nautilus Project)
+
+## 📌 Task Overview
+
+As part of the Nautilus project in the Stratos Datacenter, a temporary user account is required for a developer who needs access only for a limited time.
+
+### ✅ Requirements
+
+* Create a user named **`john`** (lowercase only)
+* Perform the task **only on App Server 3**
+* Set the account **expiry date to 2024-02-17**
+* Follow standard Linux user management practices
+
+---
+
+## 🧭 Step-by-Step Implementation
+
+### 1️⃣ Connect to App Server 3
+
+From the Jump Host, SSH into App Server 3:
+
+```bash
+ssh stapp03
+```
+
+---
+
+### 2️⃣ Switch to Root User
+
+User creation requires administrative privileges:
+
+```bash
+sudo -i
+```
+
+---
+
+### 3️⃣ Create the User with Expiry Date
+
+Use the `useradd` command with the `-e` option:
+
+```bash
+useradd -e 2024-02-17 john
+```
+
+#### 🔍 Command Explanation
+
+* `useradd` → Creates a new user account
+* `-e 2024-02-17` → Sets the account expiry date
+* `john` → Username (lowercase as required)
+
+---
+
+### 4️⃣ Verify User Creation
+
+Check whether the user exists:
+
+```bash
+id john
+```
+
+✅ This confirms the user was created successfully.
+
+---
+
+### 5️⃣ Verify Account Expiry Date
+
+Confirm the expiry date using:
+
+```bash
+chage -l john
+```
+
+✅ Expected output:
+
+```
+Account expires : Feb 17, 2024
+```
+
+---
+
+## ✔ Validation Checklist
+
+* [x] User created only on **App Server 3**
+* [x] Username follows lowercase standard
+* [x] Expiry date correctly set
+* [x] Verified using `id` and `chage`
+
+---
+
+## 🌍 Real-World Use Case
+
+Temporary user accounts are widely used for:
+
+* Contractors and interns
+* Short-term project collaborators
+* Audited or compliance-based access
+
+Setting an expiry date helps:
+
+* Automatically revoke access
+* Improve system security
+* Prevent stale user accounts
+
+---
+
+## 🧠 Learning Outcome
+
+This task demonstrates how Linux supports **time-bound access control**, a critical skill for system administrators and DevOps engineers managing secure environments.
+
+---
+
+📘 **Project**: Nautilus (KodeKloud Labs)
+📅 **Task**: Linux Task 5
+🚀 **Skill**: Linux User Management
