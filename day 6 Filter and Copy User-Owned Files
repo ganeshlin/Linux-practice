@@ -1,0 +1,135 @@
+# Linux Task 6 – Filter and Copy User-Owned Files (Nautilus Project)
+
+## 📌 Task Overview
+
+Due to an accidental data mix-up on **Nautilus App Server 3** in the **Stratos Datacenter**, user data was unintentionally combined under a common directory. To fix this, specific user-owned files needed to be identified and safely copied without impacting existing data.
+
+### ✅ Objective
+
+* Locate **only files (no directories)**
+* Owned by user **`kirsty`**
+* Inside the directory **`/home/usersdata`**
+* Copy them to **`/ecommerce`**
+* **Preserve the original directory structure**
+
+---
+
+## 🧠 Why This Task Matters (Real-World Use Case)
+
+In real production environments:
+
+* User data may get mixed due to automation errors or misconfigured scripts
+* Blind copying or moving data can cause **data loss** or **application downtime**
+* Filtering by **ownership** ensures only the correct user's data is handled
+* Preserving directory structure avoids breaking application dependencies
+
+This task demonstrates **safe data handling**, a critical Linux administration skill.
+
+---
+
+## 🖥️ Server Details
+
+* **Server**: App Server 3 (`stapp03`)
+* **Source Path**: `/home/usersdata`
+* **Destination Path**: `/ecommerce`
+* **User**: `kirsty`
+
+---
+
+## 🛠️ Step-by-Step Solution
+
+### 1️⃣ Login to App Server 3
+
+```bash
+ssh stapp03
+```
+
+---
+
+### 2️⃣ Verify Source Directory Exists
+
+```bash
+ls -ld /home/usersdata
+```
+
+---
+
+### 3️⃣ Ensure Destination Directory Exists
+
+```bash
+ls -ld /ecommerce || mkdir -p /ecommerce
+```
+
+---
+
+### 4️⃣ Core Command (Main Solution)
+
+```bash
+find /home/usersdata -type f -user kirsty -exec cp --parents {} /ecommerce \;
+```
+
+---
+
+## 🔍 Command Explanation
+
+| Command Part           | Purpose                                 |
+| ---------------------- | --------------------------------------- |
+| `find /home/usersdata` | Search within usersdata directory       |
+| `-type f`              | Select files only (exclude directories) |
+| `-user kirsty`         | Match files owned by user kirsty        |
+| `cp --parents`         | Preserve original directory structure   |
+| `{}`                   | Placeholder for each found file         |
+| `/ecommerce`           | Destination directory                   |
+
+---
+
+## 🔎 Verification Steps
+
+### Check Copied Files
+
+```bash
+find /ecommerce -type f
+```
+
+### Verify Ownership
+
+```bash
+find /ecommerce -type f -user kirsty
+```
+
+### Validate Directory Structure
+
+```bash
+find /ecommerce
+```
+
+---
+
+## 🚫 Common Mistakes to Avoid
+
+* ❌ Using `cp -r` → Copies unwanted directories
+* ❌ Missing `-type f` → Directories included
+* ❌ Forgetting `--parents` → Directory structure lost
+* ❌ Using `mv` instead of `cp` → Risk of data loss
+
+---
+
+## 🏁 Final Outcome
+
+✔ Only `kirsty`-owned files copied
+✔ Directory structure preserved
+✔ No impact on original data
+✔ Production-safe execution
+
+---
+
+## 📚 Skills Practiced
+
+* Advanced `find` command usage
+* Ownership-based file filtering
+* Safe data operations in Linux
+* Real-world production troubleshooting
+
+---
+
+🔗 *Part of the xFusionCorp Nautilus Linux Task Series (KodeKloud-style labs)*
