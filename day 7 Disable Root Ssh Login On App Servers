@@ -1,0 +1,166 @@
+# 🔐 Disable Direct Root SSH Login on App Servers
+
+## 📌 Task Overview
+
+Following recent security audits, **xFusionCorp Industries** enforced new security protocols to restrict **direct root SSH access**. The objective of this task is to **disable direct SSH login for the root user** on all **Application Servers** in the **Stratos Datacenter**.
+
+This task aligns with industry best practices and is commonly validated in **Nautilus / KodeKloud-style labs**.
+
+---
+
+## 🏗️ Environment Details
+
+* **Datacenter:** Stratos
+* **Servers:**
+
+  * `stapp01`
+  * `stapp02`
+  * `stapp03`
+* **Service:** OpenSSH (`sshd`)
+
+---
+
+## 🎯 Objective
+
+* Prevent users from logging in directly as `root` via SSH
+* Enforce access through standard users with `sudo` privileges
+* Improve security, auditing, and compliance
+
+---
+
+## 🛠️ Step-by-Step Implementation
+
+### 🔹 Step 1: SSH into the App Server
+
+From the **Jump Host**, connect using a non-root user:
+
+```bash
+ssh tony@stapp01
+```
+
+Repeat this step for all app servers.
+
+---
+
+### 🔹 Step 2: Switch to Root User
+
+```bash
+sudo su -
+```
+
+---
+
+### 🔹 Step 3: Edit SSH Configuration
+
+Open the SSH daemon configuration file:
+
+```bash
+vi /etc/ssh/sshd_config
+```
+
+---
+
+### 🔹 Step 4: Disable Root Login
+
+Search for the following directive:
+
+```bash
+/PermitRootLogin
+```
+
+Update or add the setting as shown below:
+
+```ini
+PermitRootLogin no
+```
+
+⚠️ **Important Notes:**
+
+* Uncomment the line if it starts with `#`
+* Ensure there is **only one** `PermitRootLogin` entry
+
+---
+
+### 🔹 Step 5: Restart SSH Service
+
+Apply the configuration changes:
+
+```bash
+systemctl restart sshd
+```
+
+Verify the service status:
+
+```bash
+systemctl status sshd
+```
+
+---
+
+### 🔹 Step 6: Validation Test
+
+From the jump host, attempt to log in as root:
+
+```bash
+ssh root@stapp01
+```
+
+✅ **Expected Result:**
+
+```text
+Permission denied, please try again.
+```
+
+This confirms that root SSH login is disabled.
+
+---
+
+## 🔁 Repeat for All App Servers
+
+Perform the above steps on:
+
+* `stapp01`
+* `stapp02`
+* `stapp03`
+
+---
+
+## ✅ Final Result
+
+* 🔒 Root SSH login disabled on all app servers
+* 👤 Access enforced via standard users + sudo
+* 📊 Improved audit trail and accountability
+* 🛡️ Reduced attack surface
+
+---
+
+## 🌍 Real-World Use Case
+
+In production environments:
+
+* Direct root login is a **major security risk**
+* Disabling it prevents brute-force attacks
+* Enables user-level logging and accountability
+* Meets compliance standards like **CIS Benchmarks**
+
+---
+
+## 🧠 Key Learning
+
+> *Security is not just about access — it’s about controlled, auditable access.*
+
+This task demonstrates a foundational Linux hardening step used across enterprise systems.
+
+---
+
+### 📂 Repository Usage
+
+You can include this README as part of:
+
+* Linux Security Hardening
+* DevOps Daily Tasks
+* 100 Days of Linux / DevOps Challenge
+
+---
+
+⭐ **Feel free to star this repo if you found it helpful!**
