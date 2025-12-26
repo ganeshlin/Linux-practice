@@ -1,0 +1,74 @@
+Task: Create compressed archive of developer jim's data from /data/jim and transfer to /home.
+
+Task Overview
+Environment: Stratos DC, Nautilus storage server
+
+Objective: Archive /data/jim directory as jim.tar.gz and move to /home
+
+User: natasha (sudo access)
+​
+
+Prerequisites
+SSH access to storage server (e.g., ststor01.stratos.xfusioncorp.com)
+
+Root/sudo privileges
+
+Step-by-Step Solution
+1. Access Storage Server
+bash
+# From jump host
+ssh natasha@ststor01.stratos.xfusioncorp.com
+sudo -i
+2. Verify Source Directory
+bash
+ls -l /data/jim
+3. Create Compressed Archive
+bash
+tar -czvf /root/jim.tar.gz /data/jim
+Flags explained:
+
+-c: Create new archive
+
+-z: Gzip compression
+
+-v: Verbose output
+
+-f: Specify filename
+​
+
+4. Transfer to /home
+bash
+mv /root/jim.tar.gz /home/
+5. Validation
+bash
+ls -lh /home/jim.tar.gz
+tar -tzf /home/jim.tar.gz | head -5  # List archive contents
+Complete One-Liner Alternative
+bash
+sudo tar -czf /home/jim.tar.gz /data/jim && echo "Archive created successfully!"
+Expected Output
+text
+jim/
+jim/file1.txt
+jim/documents/
+jim/documents/report.pdf
+...
+Verification Checklist
+✅ jim.tar.gz exists in /home
+
+✅ Archive contains complete /data/jim directory structure
+
+✅ File is properly compressed (.tar.gz)
+
+✅ Permissions allow task validation
+​
+
+Learning Outcomes
+Linux tar command with gzip compression
+
+File/directory operations between paths
+
+Archive verification techniques
+
+Status: Completed ✅
+Portfolio Addition: Demonstrates Linux administration skills for DevOps roles
