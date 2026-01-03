@@ -1,0 +1,84 @@
+# Linux Task 10 – Fix ACL Permissions on /etc/hosts
+
+## 📌 Task Overview
+After a security audit in the **Stratos Datacenter**, the Nautilus security team identified misconfigured permissions on a critical system file.
+
+**File:** `/etc/hosts`  
+**Server:** Nautilus App 1 (`stapp01`)
+
+The production support team was asked to correct ownership, permissions, and ACLs.
+
+---
+
+## 🎯 Requirements
+1. File owner must be `root`
+2. File group must be `root`
+3. Others should have **read-only** permission
+4. User `yousuf` must have **no permissions**
+5. User `jerome` must have **read-only** permission
+
+---
+
+## 🖥️ Step-by-Step Solution
+
+### Step 1: Login to App Server
+```bash
+ssh tony@stapp01
+sudo -i
+
+Step 2: Set Owner and Group to root
+chown root:root /etc/hosts
+
+
+Reason: Ensures ownership compliance with security standards.
+
+Step 3: Set Others Permission to Read-Only
+chmod o=r /etc/hosts
+Reason: Prevents unauthorized modification by other users.
+
+Step 4: Clear Existing ACLs (Safe Baseline)
+setfacl -b /etc/hosts
+
+
+Reason: Removes any previous ACL entries that may conflict.
+
+Step 5: Deny All Permissions for User yousuf
+setfacl -m u:yousuf:0 /etc/hosts
+Reason: Explicitly blocks access using ACLs.
+
+Step 6: Grant Read-Only Permission to User jerome
+setfacl -m u:jerome:r /etc/hosts
+
+
+Reason: Allows controlled access without changing global permissions.
+
+🔍 Verification
+Check File Permissions
+ls -l /etc/hosts
+Expected output:
+
+text
+Copy code
+-rw-r--r--+ 1 root root 374 Jan  3 14:19 /etc/hosts
++ indicates ACLs are applied
+Check ACL Configuration
+getfacl /etc/hosts
+
+
+Expected output:
+# file: etc/hosts
+# owner: root
+# group: root
+user::rw-
+user:jerome:r--
+user:yousuf:---
+group::r--
+mask::r--
+other::r--
+Key Learnings
+
+chmod controls generic permissions
+
+setfacl is required for user-specific access control
+
+ACL mask plays a critical role in effective permissions
