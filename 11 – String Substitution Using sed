@@ -1,0 +1,74 @@
+Task Overview
+
+Within the Stratos Datacenter, the Nautilus backup server stores template XML files required by the Nautilus application.
+Before these templates can be used, placeholder strings must be replaced with valid data.
+
+As part of routine maintenance, system administrators at xFusionCorp Industries use Linux string and file manipulation utilities to update such files efficiently.
+
+🎯 Objective
+
+Replace all occurrences of the string:
+
+String → Marine
+
+
+in the XML file located at:
+
+/root/nautilus.xml
+
+
+on the backup server.
+🖥️ Server Details
+Component	Value
+Server Role	Backup Server
+File Type	XML
+File Path	/root/nautilus.xml
+Tool Used	sed
+
+🛠️ Solution Steps
+1️⃣ Log in to the Backup Server
+ssh root@backup-server
+
+2️⃣ Create a Backup of the Original File (Best Practice)
+cp /root/nautilus.xml /root/nautilus.xml.bak
+
+
+📌 This ensures recovery is possible if a rollback is required.
+3️⃣ Replace All Occurrences Using sed
+sed -i 's/String/Marine/g' /root/nautilus.xml
+
+Command Explanation:
+
+sed → Stream editor for text manipulation
+
+-i → Edit the file in place
+
+s/String/Marine/g → Substitute all occurrences globally
+
+/root/nautilus.xml → Target file
+4️⃣ Verify the Changes
+Confirm replacement:
+grep -n "Marine" /root/nautilus.xml
+
+Ensure old string is removed:
+grep -n "String" /root/nautilus.xml
+
+
+✔️ No output confirms successful replacement
+
+✅ Result
+
+All instances of String have been replaced with Marine
+
+XML template is updated and ready for application use
+
+Task completed following enterprise best practices
+
+🧠 Key Takeaways
+
+sed is a powerful tool for in-place file editing
+
+Always back up critical configuration or template files
+
+Verification ensures compliance and avoids silent failures
+📂 Task Status: Completed Successfully ✔️
